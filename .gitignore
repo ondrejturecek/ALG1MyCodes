@@ -1,0 +1,26 @@
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+
+### NetBeans ###
+**/nbproject/
+build/
+dist/
+build.xml
+manifest.mf
+
+### Intellij ###
+.idea/**/
+out/
+
+#OS
+.DS_Store
+
+# Maven-specific files (if applicable)
+target/
