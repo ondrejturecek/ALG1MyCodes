@@ -11,8 +11,8 @@ package ulohy02;
  */
 public class alkohol {
     public static void main(String[] args) {
-        double ql = 0.5;
-        double qcm = ql*1000;
+        double q1 = 0.5;
+        double qcm = q1*1000;
         double p = 5.0;
         double m = 75.0;
         final double RHO = 0.8; // g/cm3
@@ -20,7 +20,7 @@ public class alkohol {
         final double BM = 0.1;
         
         double met = Math.round((qcm*p*RHO)/100);
-        double prom = Math.round((met)/m*RM);
+        double prom = Math.round((met)/(m*RM));
         double vet = Math.round(m*BM); 
         double cas = Math.round(met/vet);
         
