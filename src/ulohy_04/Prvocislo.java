@@ -43,4 +43,23 @@ public class Prvocislo {
         }
 
     }
+    public static boolean isPrime(int cislo){
+            int i = 2;
+
+            boolean isPrime = true;
+
+            if (cislo == 1) {
+                isPrime = false;
+            }
+
+            while (i <= Math.sqrt(cislo) && isPrime) {
+
+                if (cislo % i == 0) {
+                    isPrime = false;
+                    //break;
+                }
+                i++;
+        }
+            return isPrime;
+    }
 }

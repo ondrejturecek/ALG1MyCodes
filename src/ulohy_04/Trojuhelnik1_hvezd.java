@@ -9,13 +9,18 @@ package ulohy_04;
  *
  * @author Dagmar Malá
  */
-public class N_hvezd {
+public class Trojuhelnik1_hvezd {
     public static void main(String[] args) {
-     int x = 5;
-     
-        for (int i = 0; i <= x - 1; i++) {
-            System.out.print("* ");
-            
+        int x = 5;
+
+        for (int j = 0; j < x; j++) {
+
+            for (int i = 0; i < x; i++) {
+                System.out.print("* ");
+            }
+
+            System.out.println("  ");
         }
     }
+    
 }
