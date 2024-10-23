@@ -17,9 +17,13 @@ public class Trojuhelnik1_hvezd {
 
             for (int i = 0; i < x; i++) {
                 System.out.print("* ");
+                if (i == j){
+                    break;
+                }  
+                
             }
 
-            System.out.println("  ");
+            System.out.println("  ");   
         }
     }
     
