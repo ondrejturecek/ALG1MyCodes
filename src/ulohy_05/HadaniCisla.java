@@ -15,16 +15,22 @@ public class HadaniCisla {
         do {
             displayMenu(); //HadaniCisla.displayMenu()
             answer = choose();
-            switch(answer){
-                case 1: changeRange(); break;
-                case 2: pcPlays(); break;
-                case 3: userPlays(); break;
-                case 0: end = true; System.out.println("Konec"); break;
-                default : System.out.println("Spatna volba");
+            switch (answer) {
+                case 1: changeRange();
+                    break;
+                case 2: pcPlays();
+                    break;
+                case 3: userPlays();
+                    break;
+                case 0: end = true;
+                    System.out.println("Konec");
+                    break;
+                default:
+                    System.out.println("Spatna volba");
             }
-
         } while (!end); //end == false 
     }
+
     private static void displayMenu() {
         System.out.println("Vyber volbu");
         System.out.println("1. Změn rozsah");
@@ -38,13 +44,30 @@ public class HadaniCisla {
         return a;
     }
 
+    private static void changeRange() {
+        System.out.println("Základní interval je 1 - 100");
+        System.out.println("0 pokud ho chceš nechat");
+        System.out.println("1 pokud ho chceš změnit");
+        int answer = choose();
+
+        if (answer == 0) {
+            return;
+        } else if (answer == 1) {
+            System.out.println("Zadaj minimum: ");
+            min = choose();
+            System.out.println("Zadej maximum: ");
+            max = choose();
+        }
+
+    }
+
     private static void pcPlays() {
         System.out.println("Mysli si číslo v rozsahu od " + min + " do " + max);
         int lower = min;
         int upper = max;
         int middle;
         boolean found = false;
-        
+
         do {
             middle = (lower + upper) / 2;
 
@@ -66,24 +89,37 @@ public class HadaniCisla {
                 System.out.println("Spatna volba");
             }
         } while (!found && lower <= upper);
-        
-        if(!found){
+
+        if (!found) {
             System.out.println("Myšlené číslo není v rozsahu");
         }
     }
+
     private static void userPlays() {
-        int rnadomNumber = ThreadLocalRandom.current().nextInt(min,max + 1);
-        
+        int randomNumber = ThreadLocalRandom.current().nextInt(min, max + 1);
+        boolean found = false;
+        System.out.println("Myslim si číslo v rozsahu od " + min + " do " + max);
+        System.out.println("Zkus ho uhodnout");
+
+        do {
+            System.out.println("Tipni si cislo.");
+            int answer = choose();
+
+            if (answer == randomNumber) {
+                System.out.println("Trefil jsi se");
+                found = true;
+            } else if (answer < randomNumber) {
+                System.out.println("Hledane cislo je vetsi");
+            } else {
+                System.out.println("Hledane cislo je mensi");
+            }
+        } while (!found);
+
     }
-    private static void changeRange() {
-        
-       }
+}
+
 //    //test
 //    public static void main(String[] args) {
-//        pcPlays();
+//        changeRange();
 //    }
 
-
-
-
-}
