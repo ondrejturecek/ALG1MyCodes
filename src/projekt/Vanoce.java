@@ -135,28 +135,4 @@ public class Vanoce {
         System.out.println("Zadej celé číslo pro určení počtu ryb:");
         pocet = volba();
     }
-//    public static void telo(){
-//
-//        int x = 13;
-//
-//        for (int j = 0; j < x; j++) {
-//            for (int i = 0; i < x - j; i++) {
-//                System.out.print(" ");
-//            }
-//            for (int i = 0; i <= j; i++) {
-//                System.out.print("^ ");
-//            }
-//            System.out.println("  ");
-//        }
-//        
-//        for (int j = 0; j < x - 1; j++) {
-//            for (int i = 0; i <= j + 1; i++) {
-//                System.out.print(" ");
-//            }
-//            for (int i = 0; i < x - j - 1; i++) {
-//                System.out.print("^ ");
-//            }
-//            System.out.println("  ");
-//        }
-//    }
 }
