@@ -31,21 +31,33 @@ public class ArrayTools {
         return max;
     }
 
-    public static int indexMin(int[] numbers) {
+    public static int findexMin(int[] numbers) {
         int min = numbers[0];
-        int index = 0;
+        int findex = 0;
         for (int i = 0; i <= numbers.length - 1; i++) {
             if (numbers[i] < min) {
                 min = numbers[i];
-                index = i;
+                findex = i;
             }
         }
-        return index;
+        return findex;
+    }
+    
+        public static int lindexMin(int[] numbers) {
+        int min = numbers[0];
+        int lindex = 0;
+        for (int i = 0; i <= numbers.length - 1; i++) {
+            if (numbers[i] <= min) {
+                min = numbers[i];
+                lindex = i;
+            }
+        }
+        return lindex;
     }
 
     public static void main(String[] args) {
         int[] pole = loadArray();
-        int index = indexMin(pole) + 1;
+        int index = lindexMin(pole) + 1;
         System.out.println("index min =  " + index);
     }
 }
