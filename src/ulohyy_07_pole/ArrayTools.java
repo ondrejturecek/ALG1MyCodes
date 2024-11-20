@@ -42,8 +42,8 @@ public class ArrayTools {
         }
         return findex;
     }
-    
-        public static int lindexMin(int[] numbers) {
+
+    public static int lindexMin(int[] numbers) {
         int min = numbers[0];
         int lindex = 0;
         for (int i = 0; i <= numbers.length - 1; i++) {
@@ -55,9 +55,17 @@ public class ArrayTools {
         return lindex;
     }
 
+    public static boolean testVzestupnost(int[] a) {
+        for (int i = 0; i < a.length - 1; i++) {
+            if (a[i] > a[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
     public static void main(String[] args) {
-        int[] pole = loadArray();
-        int index = lindexMin(pole) + 1;
-        System.out.println("index min =  " + index);
+        int[] pole = {1, 2, 3, 4, 5};
+        System.out.println(testVzestupnost(pole));
+        
     }
 }
