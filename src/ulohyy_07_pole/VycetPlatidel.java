@@ -23,7 +23,7 @@ public class VycetPlatidel {
           }
         }
         for (int i = 0; i <= pocet.length - 1; i++) {
-            System.out.print(pocet[i] + " ");
+            System.out.println(PLATIDLA[i] + ": " + pocet[i] + " Kč ");
         }
     }
 }
