@@ -13,8 +13,6 @@ public class Semestr {
     public static int rowsb = 1;
     public static int rows = 0;
     public static int pocet = 1;
-    public static int[][] matrix = new int[100][100];
-    public static int size;
 
     public static void main(String[] args) {
         boolean start = true;
@@ -178,23 +176,21 @@ public class Semestr {
     private static void reduction() {
         boolean begin = true;
         int answer;
+        int[][] matrix;
+        int size;
 
         do {
             semestrMenu();
             answer = choice();
-            switch (answer) {
-                case 1:
-                    System.out.println("Nejprve zadejte rozměr vaší čtvercové matice, kterou chcete redukovat.");
-                    size = choice();
+            if (answer > 0){
+                    size = answer;
+                    matrix = new int [size] [size]; 
                     matrix(size, matrix);
-                case 2:
                     reduce(size, matrix);
-                case 0:
+            }else{
                     begin = false;
                     System.out.println("Konec");
                     break;
-                default:
-                    System.out.println("Spatna volba");
             }
 
         } while (begin == true);
@@ -202,16 +198,12 @@ public class Semestr {
 
     private static void semestrMenu() {
         System.out.println("Vítejte v menu pro redukci Matice.");
-        System.out.println("Stiskněte 1. pro zadání, nebo upravení, matice kterou chcete redukovat.");
-        System.out.println("Stiskněte 2. pro provedéní redukce vámi zadané matice.");
-        System.out.println("Stiskněte 0. pro návrat do hlaavního menu.");
+        System.out.println("Zadejte celé kladné čílo rozměru matice.");
+        System.out.println("Zadejte 0 nebo záporné číslo pro ukončení");
     }
 
-    private static int[][] matrix(int size, int[][] matrix) {
-        System.out.println("Nejprve zadejte rozměr vaší čtvercové matice, kterou chcete redukovat.");
-
+    private static int[][] matrix(int size, int [] [] matrix) {
         System.out.println("nyní zadávejte postupně celočíselné hodnoty vaší matice");
-
         matrix = loadMatrix(size, matrix);
         System.out.println("  ");
         printMatrix(size, matrix);
@@ -238,9 +230,9 @@ public class Semestr {
         }
     }
 
-    private static void reduce(int size, int [] [] matrix) {
+    private static void reduce(int size, int[][] matrix) {
         System.out.println(size + " * " + size);
         System.out.println(matrix);
-        
+
     }
 }
