@@ -63,6 +63,7 @@ public class ArrayTools {
         }
         return true;
     }
+    
     public static void main(String[] args) {
         int[] pole = {1, 2, 3, 4, 5};
         System.out.println(testVzestupnost(pole));

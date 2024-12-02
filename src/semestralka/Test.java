@@ -13,40 +13,30 @@ public class Test {
 
     public static void main(String[] args) {
         int[] index = new int[2];
-        int indexi = 0;
-        int indexj = 0;
-
-        int[][] matrix = {
-            {1, 0, 3},
-            {0, 5, 0},
-            {7, 0, 9}
+        int [] [] matrix = {
+            {0, 0, 0, 4},
+            {0, 5, 0, 0},
+            {7, 0, 9, 0},
+            {6, 0, 4, 0}
         };
-        System.out.println(matrix);
-        System.out.println("  ");
-        findIndexI(index, indexi, indexj, matrix);
-//        printReduceMatrix(indexi, indexj, matrix);
-        for (int i = 0; i < index.length; i++) {
-            System.out.print(index[i] + " ");
-        }
-        System.out.println("  ");
-        System.out.println("  ");
-        
+    
+        findIndexI(index, matrix);
         printReduceMatrix(index, matrix);
     }
 
-    private static int[] findIndexI(int[] index, int indexi, int indexj, int[][] matrix) {
+    private static int[] findIndexI(int[] index, int[][] matrix) {
         boolean isOriginal = false;
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 if (matrix[i][j] != 0) {
-                    indexi = i;
-                    indexj = j;
-                    isOriginal = isOrigin(isOriginal, indexi, indexj, matrix);
+                    isOriginal = isOrigin(isOriginal, i, j, matrix);
 
                     if (isOriginal == true) {
                         index[0] = i;
                         index[1] = j;
+                    }else{
+                        isOriginal = false;
                     }
                 }
             }
@@ -54,39 +44,41 @@ public class Test {
         return index;
     }
 
-    private static boolean isOrigin(boolean isOriginal, int indexi, int indexj, int[][] matrix) {
+    private static boolean isOrigin(boolean isOriginal, int i, int j, int[][] matrix) {
         int sumi = 0;
         int sumj = 0;
         boolean isOriginali = false;
         boolean isOriginalj = false;
 
-        for (int i = 0; i < matrix.length; i++) {
-            sumi = sumi + matrix[i][indexj];
+        for (int k = 0; k < matrix.length; k++) {
+            sumi = sumi + matrix[k][j];
         }
-        if (sumi == matrix[indexi][indexj]) {
+        if (sumi == matrix[i][j]) {
             isOriginali = true;
         }
 
-        for (int j = 0; j < matrix.length; j++) {
-            sumj = sumj + matrix[indexi][j];
+        for (int k = 0; k < matrix.length; k++) {
+            sumj = sumj + matrix[i][k];
         }
-        if (sumj == matrix[indexi][indexj]) {
+        if (sumj == matrix[i][j]) {
             isOriginalj = true;
         }
 
         if (isOriginali == true && isOriginalj == true) {
             isOriginal = true;
+        }else{
+            isOriginal = false;
         }
         return isOriginal;
     }
 
     private static void printReduceMatrix(int[] index, int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
-            if (i == index[0] - 1) {
+            if (i == index[0]) {
                 continue;
             }
             for (int j = 0; j < matrix.length; j++) {
-                if (j == index[1] - 1) {
+                if (j == index[1]) {
                     continue;
                 }
                 System.out.print(matrix[i][j] + " ");
