@@ -178,200 +178,156 @@ public class Semestr {
         int answer;
         int[][] matrix;
         int size;
-        int IndexNumber = 0;
+
+        Scanner scanner = new Scanner(System.in);
 
         do {
-            semestrMenu();
-            answer = choice();
-            if (answer > 0) {
+            semestrMenu();     // Vypíše menu s instrukcemi pro uživatele.
+            answer = choice(scanner); // Načtení velikosti matice od uživatele.
+            if (answer > 0) {  // Pokud uživatel zadá kladné číslo:
                 size = answer;
-                matrix = new int[size][size];
-                int[][] index = new int[size][2];
-                index[0][0] = -1;
-                index[0][1] = -1;
+                matrix = new int[size][size]; // Inicializace matice.
+                matrix = loadMatrix(size, matrix, scanner); // Načtení matice od uživatele.
+                System.out.println("\nPůvodní matice:");
+                printMatrix(matrix); // Výpis původní matice.
 
-                matrix(size, matrix);
-                findIndex(index, matrix);
-                for (int i = 0; i < index.length; i++) {
-                    for (int j = 0; j < 2; j++) {
-                        System.out.print(index[i][j]);
+                // Hlavní smyčka pro redukci
+                while (true) {
+                    int[][] indices = new int[matrix.length][2]; // Pole pro ukládání indexů prvků, které budou redukovány.
+                    int indexCount = findIndices(matrix, indices); // Najde všechny redukovatelné prvky.
+
+                    if (indexCount == 0) { // Pokud nejsou žádné redukovatelné prvky:
+                        System.out.println("Žádné další prvky pro redukci. Matice zůstává:");
+                        printMatrix(matrix);
+                        break; // Ukončí smyčku redukce.
                     }
-                    System.out.println("  ");
-                }
-                if (index[0][0] == -1) {
-                    System.out.println("Redukce nelze provézt");
+
+                    // Redukce matice
+                    matrix = reducedMatrix(matrix, indices, indexCount);
+                    System.out.println("\nRedukovaná matice:");
                     printMatrix(matrix);
-
                 }
-                IndexNumber = reduceIndexNumber(index, IndexNumber);
-                int[][] reduceIndex = new int[index.length - IndexNumber][2];
-                reduceIndex(index, reduceIndex, IndexNumber);
-                int[][] reduced = new int[matrix.length - reduceIndex.length][matrix.length - reduceIndex.length];
-                reducedMatrix(matrix, reduced, reduceIndex);
-                System.out.println("původní matice řádu: " + size + "*" + size);
-                printMatrix(matrix);
-                System.out.println("Redukovaná matice");
-                printReducedMatrix(reduced);
-            } else {
+            } else { // Pokud uživatel zadá 0 nebo záporné číslo:
                 begin = false;
-                System.out.println("Konec");
-                break;
+                System.out.println("Konec.");
             }
+        } while (begin);
 
-        } while (begin == true);
+        scanner.close();
     }
 
     private static void semestrMenu() {
-        System.out.println("Vítejte v menu pro redukci Matice.");
-        System.out.println("Zadejte celé kladné čílo rozměru matice.");
-        System.out.println("Zadejte 0 nebo záporné číslo pro ukončení");
+        System.out.println("Vítejte v menu pro redukci matice.");
+        System.out.println("Zadejte celé kladné číslo rozměru matice.");
+        System.out.println("Zadejte 0 nebo záporné číslo pro ukončení.");
     }
 
-    private static int[][] matrix(int size, int[][] matrix) {
-        System.out.println("nyní zadávejte postupně celočíselné hodnoty vaší matice");
-        matrix = loadMatrix(size, matrix);
-        System.out.println("  ");
-        printMatrix(matrix);
-        System.out.println("  ");
-
-        return matrix;
-    }
-
-    public static int[][] loadMatrix(int size, int[][] matrix) {
+    private static int[][] loadMatrix(int size, int[][] matrix, Scanner scanner) {
+        System.out.println("Nyní zadávejte postupně celočíselné hodnoty vaší matice:");
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                matrix[i][j] = choice();
+                matrix[i][j] = choice(scanner);
             }
         }
         return matrix;
     }
 
     private static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.print(matrix[i][j] + " ");
+        for (int[] row : matrix) {
+            for (int value : row) {
+                System.out.print(value + " ");
             }
-            System.out.println("  ");
+            System.out.println();
         }
     }
 
-    private static int[][] findIndex(int[][] index, int[][] matrix) {
-        boolean isOriginal = false;
+    private static int findIndices(int[][] matrix, int[][] indices) {
+        int count = 0;
 
         for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                if (matrix[i][j] != 0) {
-                    isOriginal = isOrigin(isOriginal, i, j, matrix);
-                    if (isOriginal == true) {
-                        for (int k = 0; k < index.length; k++) {
-                            index[k][0] = i + 1;
-                            index[k][1] = j + 1;
-                            break;
-                        }
-                    }
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j] != 0 && isUnique(i, j, matrix)) {
+                    indices[count][0] = i; // Uložíme řádek
+                    indices[count][1] = j; // Uložíme sloupec
+                    count++;
                 }
             }
         }
-        return index;
+
+        return count; // Vrací počet nalezených indexů
     }
 
-    private static boolean isOrigin(boolean isOriginal, int i, int j, int[][] matrix) {
+    private static boolean isUnique(int i, int j, int[][] matrix) {
+        // Počet nenulových prvků v řádku a sloupci
+        int nonZeroInRow = 0, nonZeroInCol = 0;
 
-        for (int k = 0; k < matrix.length; k++) {
-            if (matrix[i][j] == matrix[i][k]) {
-                continue;
-            }
+        for (int k = 0; k < matrix[i].length; k++) {
             if (matrix[i][k] != 0) {
-                isOriginal = false;
-                return isOriginal;
+                nonZeroInRow++;
             }
         }
+
         for (int k = 0; k < matrix.length; k++) {
-            if (matrix[i][j] == matrix[k][j]) {
-                continue;
-            }
             if (matrix[k][j] != 0) {
-                isOriginal = false;
-                return isOriginal;
+                nonZeroInCol++;
             }
         }
-        isOriginal = true;
-        return isOriginal;
+
+        // Prvek je unikátní, pokud je jediný nenulový v řádku a sloupci
+        return nonZeroInRow == 1 && nonZeroInCol == 1;
     }
 
-    private static int reduceIndexNumber(int[][] index, int reduceIndexNumber) {
-        int sumj0 = 0;
-        int sumj1 = 0;
+    private static int[][] reducedMatrix(int[][] matrix, int[][] indices, int indexCount) {
+        // Určíme řádky a sloupce k odstranění
+        boolean[] removeRows = new boolean[matrix.length];
+        boolean[] removeCols = new boolean[matrix[0].length];
 
-        for (int i = 0; i < index.length; i++) {
-            if (index[i][0] == 0) {
-                sumj0 = sumj0 + 1;
+        for (int i = 0; i < indexCount; i++) {
+            removeRows[indices[i][0]] = true;
+            removeCols[indices[i][1]] = true;
+        }
+
+        // Spočítáme nový rozměr matice
+        int newSize = matrix.length - countTrue(removeRows);
+
+        int[][] reduced = new int[newSize][newSize];
+        int rowIdx = 0;
+
+        for (int i = 0; i < matrix.length; i++) {
+            if (removeRows[i]) {
+                continue; // Přeskoč řádky k odstranění
             }
-        }
-        for (int i = 0; i < index.length; i++) {
-            if (index[i][1] == 0) {
-                sumj1 = sumj1 + 1;
-            }
-        }
-        if (sumj0 == sumj1) {
-            reduceIndexNumber = sumj0;
-        }
-        return reduceIndexNumber;
-    }
-
-    public static int[][] reduceIndex(int[][] index, int[][] reduceIndex, int reduceIndexNumber) {
-
-        for (int i = 0; i < index.length - reduceIndexNumber; i++) {
-            for (int j = 0; j < 2; j++) {
-                reduceIndex[i][j] = index[i][j] - 1;
-
-            }
-
-        }
-
-        return reduceIndex;
-    }
-
-    public static int[][] reducedMatrix(int[][] matrix, int[][] reduced, int[][] reduceIndex) {
-        int[] temp = new int[(matrix.length - reduceIndex.length) * (matrix.length - reduceIndex.length)];
-        int z = -1;
-        int y = -1;
-
-        for (int l = 0; l < reduceIndex.length; l++) {
-            for (int i = 0; i < matrix.length; i++) {
-                if (i == reduceIndex[l][0]) {
-                    continue;
+            int colIdx = 0;
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (removeCols[j]) {
+                    continue; // Přeskoč sloupce k odstranění
                 }
-                for (int j = 0; j < matrix.length; j++) {
-                    if (j == reduceIndex[l][1]) {
-                        continue;
-                    }
-                    z = z + 1;
-                    temp[z] = matrix[i][j];
-
-                }
+                reduced[rowIdx][colIdx] = matrix[i][j];
+                colIdx++;
             }
+            rowIdx++;
         }
-        for (int i = 0; i < reduced.length; i++) {
-            for (int j = 0; j < reduced.length; j++) {
-                y = y + 1;
-                    reduced[i][j] = temp[y];
 
-                
-
-            }
-
-        }
         return reduced;
     }
 
-    private static void printReducedMatrix(int[][] reduced) {
-        for (int i = 0; i < reduced.length; i++) {
-            for (int j = 0; j < reduced.length; j++) {
-                System.out.print(reduced[i][j] + " ");
+    private static int countTrue(boolean[] array) {
+        int count = 0; // Počítadlo, inicializováno na nulu.
+        for (boolean value : array) { // Pro každou hodnotu v poli:
+            if (value) {
+                count++; // Pokud je hodnota `true`, zvýšíme počítadlo o 1.
             }
-            System.out.println("  ");
         }
+        return count; // Vrátíme celkový počet hodnot `true`.
+    }
+
+    private static int choice(Scanner scanner) {
+        System.out.print("> ");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Zadejte celé číslo!");
+            scanner.next();
+        }
+        return scanner.nextInt();
     }
 
 }
